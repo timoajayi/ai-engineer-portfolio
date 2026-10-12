@@ -1,0 +1,40 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <list>
+          <option value="langchain" />
+          <option value="langchain-community" />
+          <option value="langchain-google-genai" />
+          <option value="langchain-huggingface" />
+          <option value="langchain-ollama" />
+          <option value="langchain-openai" />
+          <option value="langchain-tavily" />
+          <option value="langgraph" />
+          <option value="langgraph-checkpoint-postgres" />
+          <option value="langgraph-checkpoint-sqlite" />
+          <option value="Flask" />
+          <option value="google-genai" />
+          <option value="gradio" />
+          <option value="openai" />
+          <option value="psycopg-binary" />
+          <option value="psycopg" />
+          <option value="pypdf" />
+          <option value="python-dotenv" />
+          <option value="requests" />
+          <option value="rich" />
+          <option value="sentence-transformers" />
+          <option value="sounddevice" />
+          <option value="soundfile" />
+          <option value="google-ai-generativelanguage" />
+          <option value="google-api-python-client" />
+          <option value="google-auth-httplib2" />
+          <option value="google-auth-oauthlib" />
+          <option value="google-auth" />
+          <option value="pydantic" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
