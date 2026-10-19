@@ -3,6 +3,8 @@
 import { FormEvent, useState } from "react";
 import ReactMarkdown from "react-markdown";
 
+const API_URL = process.env.NEXT_PUBLIC_AI_ASSISTANT_API_URL;
+
 type ChatResponse = {
   answer: string;
 };
@@ -42,7 +44,7 @@ export default function PortfolioAssistant() {
     setLoading(true);
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/chat", {
+      const response = await fetch(`${API_URL}/chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
