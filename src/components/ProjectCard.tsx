@@ -1,4 +1,6 @@
+import Link from "next/link";
 import type { Project } from "@/data/projects";
+
 
 type ProjectCardProps = {
   project: Project;
@@ -31,9 +33,12 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       </div>
 
       <div className="mt-auto pt-8">
-        <span className="text-sm font-medium text-white transition group-hover:text-cyan-400">
+        <Link
+          href={`/projects/${project.slug}`}
+          className="text-sm font-medium text-white transition group-hover:text-cyan-400"
+        >
           View case study →
-        </span>
+        </Link>
       </div>
     </article>
   );

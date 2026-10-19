@@ -1,4 +1,6 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
+import ArchitectureDiagram from "@/components/ArchitectureDiagram";
 import { projects } from "@/data/projects";
 
 type ProjectPageProps = {
@@ -19,6 +21,12 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   return (
     <main className="min-h-screen bg-zinc-950 px-6 py-24 text-white">
       <div className="mx-auto max-w-7xl">
+        <Link
+          href="/#projects"
+          className="mb-12 inline-flex text-sm font-medium text-zinc-400 transition hover:text-cyan-400"
+        >
+          ← Back to projects
+        </Link>
 
         {/* Project category */}
         <p className="text-sm font-medium uppercase tracking-[0.2em] text-cyan-400">
@@ -89,6 +97,9 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             <p className="mt-5 max-w-4xl text-lg leading-8 text-zinc-300">
               {project.architecture}
             </p>
+            {project.architectureSteps && (
+              <ArchitectureDiagram steps={project.architectureSteps} />
+            )}
           </section>
         )}
 
@@ -96,7 +107,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         {project.contributions && (
           <section className="mt-16 border-t border-zinc-800 pt-12">
             <p className="text-sm font-medium uppercase tracking-[0.2em] text-cyan-400">
-              My Contribution
+              {project.projectType === "solo" ? "What I Built" : "My Contribution"}
             </p>
 
             <ul className="mt-6 max-w-4xl space-y-4">
