@@ -48,6 +48,13 @@ export default function PortfolioAssistant() {
       return;
     }
 
+    if (!API_URL) {
+    setError(
+      "The AI Portfolio Assistant is temporarily unavailable."
+    );
+    return;
+    }
+
     const userMessage: Message = {
       role: "user",
       content: trimmedMessage,
