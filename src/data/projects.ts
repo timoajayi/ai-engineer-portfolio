@@ -87,6 +87,72 @@ export const projects: Project[] = [
   },
 
   {
+    title: "AI Portfolio Assistant",
+    slug: "ai-portfolio-assistant",
+    category: "LLMs · RAG",
+    projectType: "solo",
+    description:
+      "A grounded AI assistant designed to answer questions about my projects, technical skills, experience, and engineering background.",
+    technologies: [
+      "Python",
+      "LLMs",
+      "RAG",
+      "FastAPI",
+      "Gemini Embeddings",
+      "BM25",
+    ],
+    featured: true,
+    status: "completed",
+
+    problem:
+      "A traditional portfolio requires recruiters and visitors to manually browse multiple sections to understand a candidate's projects, technical skills, experience, and engineering background.",
+
+    solution:
+      "The AI Portfolio Assistant provides a conversational interface that allows visitors to ask questions about my work and receive answers grounded in portfolio-specific information using hybrid retrieval that combines semantic embeddings with BM25 lexical search.",
+
+    architecture:
+      "Portfolio knowledge is split into retrievable chunks and indexed using Gemini embeddings. Visitor queries are routed based on intent, with focused questions using hybrid retrieval that combines semantic similarity with BM25 lexical search. Retrieved portfolio context is then passed to Google Gemini for grounded answer generation through a FastAPI backend consumed by the portfolio website.",
+
+    architectureSteps: [
+      "Portfolio Knowledge",
+      "Chunking",
+      "Gemini Embeddings",
+      "Query Routing",
+      "Hybrid Retrieval",
+      "Google Gemini",
+      "FastAPI",
+      "Portfolio Website",
+    ],
+
+    contributions: [
+      "Built the RAG backend for answering questions using portfolio-specific knowledge.",
+      "Implemented semantic retrieval using Gemini embeddings and cosine similarity.",
+      "Added BM25 lexical retrieval and combined it with semantic search in a hybrid retrieval pipeline.",
+      "Implemented query expansion and intent-aware routing for focused and project-level questions.",
+      "Built the FastAPI chat endpoint and integrated it with the Next.js portfolio frontend.",
+      "Created retrieval and routing evaluation suites to test the system against representative portfolio questions.",
+    ],
+
+    results: [
+      {
+        label: "Knowledge chunks",
+        value: "18",
+      },
+      {
+        label: "Retrieval evaluation",
+        value: "8 / 8",
+      },
+      {
+        label: "Routing evaluation",
+        value: "8 / 8",
+      },
+    ],
+
+    githubUrl:
+      "https://github.com/timoajayi/ai-portfolio-assistant",
+  },
+
+  {
     title: "Customer Churn Prediction",
     slug: "customer-churn-prediction",
     category: "Machine Learning",
@@ -189,48 +255,52 @@ export const projects: Project[] = [
     category: "Generative AI",
     projectType: "solo",
     description:
-      "A generative AI platform for creating and comparing marketing imagery through a FastAPI backend, Streamlit interface, and ComfyUI image-generation workflow.",
+      "An end-to-end generative AI application for creating and tracking marketing imagery through structured prompt engineering, FastAPI, ComfyUI, FLUX, and an interactive Streamlit interface.",
     technologies: [
       "Python",
       "FastAPI",
       "Streamlit",
       "ComfyUI",
-      "Stable Diffusion",
+      "FLUX",
+      "SQLite",
       "Docker",
+      "Pytest",
     ],
     featured: true,
     status: "completed",
 
     problem:
-      "Generative image tools can produce strong visual results, but turning image generation into a repeatable workflow for marketing teams requires control over prompts, generation parameters, outputs, and comparison between generated assets.",
+      "Creative teams often repeat the same prompt-writing and image-generation steps. Turning generative image models into a reusable workflow requires a structured way to configure prompts, generation parameters, outputs, and generation history.",
 
     solution:
-      "Built an AI image-generation platform that connects a Streamlit interface to a FastAPI backend and ComfyUI workflow. Users can configure generation parameters, create multiple images, compare outputs, and review generation history through a single application.",
-  },
+      "Built an end-to-end generative AI application combining a Streamlit interface, FastAPI backend, reusable prompt-engineering workflow, ComfyUI image-generation backend, and SQLite-based generation history. Users can describe a product, configure visual parameters, generate structured prompts, create images, and review previous generations through a single application.",
 
-  {
-    title: "AI Portfolio Assistant",
-    slug: "ai-portfolio-assistant",
-    category: "LLMs · RAG",
-    projectType: "solo",
-    description:
-      "A grounded AI assistant designed to answer questions about my projects, technical skills, experience, and engineering background.",
-    technologies: [
-      "Python",
-      "LLMs",
-      "RAG",
-      "FastAPI",
-      "Gemini Embeddings",
-      "BM25",
+    architecture:
+      "The Streamlit frontend collects product descriptions and generation settings and communicates with a FastAPI backend. The backend separates prompt-building and image-generation responsibilities into dedicated services, sends generation requests to ComfyUI using FLUX workflows, and stores generation metadata and history in SQLite.",
+
+    architectureSteps: [
+      "Streamlit UI",
+      "FastAPI Backend",
+      "Prompt Service",
+      "ComfyUI Client",
+      "FLUX Workflow",
+      "SQLite History",
+      "Generated Assets",
     ],
-    featured: true,
-    status: "in-progress",
 
-    problem:
-      "A traditional portfolio requires recruiters and visitors to manually browse multiple sections to understand a candidate's projects, technical skills, experience, and engineering background.",
+    contributions: [
+      "Built a guided workflow for converting product descriptions and visual settings into structured image-generation prompts.",
+      "Developed a FastAPI backend with request validation and automatically generated API documentation.",
+      "Integrated ComfyUI and FLUX workflows for AI image generation.",
+      "Implemented configurable generation parameters including seed, steps, CFG, image size, style, lighting, camera angle, and aspect ratio.",
+      "Added SQLite-based generation history and generation timing.",
+      "Created a mock image-generation backend to support local development and testing without requiring the full generation service.",
+      "Added automated tests with pytest covering prompt-building logic, API health, request validation, and the mock generation workflow.",
+      "Containerized the application with Docker.",
+    ],
 
-    solution:
-      "The AI Portfolio Assistant provides a conversational interface that allows visitors to ask questions about my work and receive answers grounded in portfolio-specific information using hybrid retrieval that combines semantic embeddings with BM25 lexical search.",
+    githubUrl:
+      "https://github.com/timoajayi/ai-creative-studio-v2",
   },
 
   {
@@ -239,7 +309,7 @@ export const projects: Project[] = [
     category: "Industrial AI · Agentic AI",
     projectType: "solo",
     description:
-      "An AI-assisted operations platform for investigating machine behavior, detecting anomalies, retrieving technical documentation, and explaining findings through tool-driven AI workflows.",
+      "A planned AI-assisted operations copilot for investigating machine behavior, detecting anomalies, retrieving technical documentation, and explaining findings through tool-driven AI workflows.",
     technologies: [
       "Python",
       "Machine Learning",

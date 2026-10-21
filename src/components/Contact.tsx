@@ -70,8 +70,8 @@ export default function Contact() {
 
               <div className="mt-2 space-y-1">
                 <p className="font-medium text-white">English · Fluent</p>
-                <p className="text-zinc-400">
-                  German · B1, progressing toward B2
+                <p className="text-white-400">
+                  German · B2
                 </p>
               </div>
             </div>
