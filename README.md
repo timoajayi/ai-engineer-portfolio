@@ -239,7 +239,7 @@ An in-development Industrial AI concept focused on combining machine learning, R
 The portfolio includes a conversational interface implemented in:
 
 ```text
-src/components/PortfolioAssistant.tsx
+src/components/FloatingPortfolioAssistant.tsx
 ```
 
 Visitors can ask questions such as:
@@ -258,7 +258,7 @@ The frontend sends the question to the separate AI Portfolio Assistant API.
 Visitor
    |
    v
-PortfolioAssistant.tsx
+FloatingPortfolioAssistant.tsx
    |
    | POST /chat
    v
@@ -327,7 +327,7 @@ ai-engineer-portfolio/
 │   │   ├── FeaturedProjects.tsx
 │   │   ├── Hero.tsx
 │   │   ├── Navbar.tsx
-│   │   ├── PortfolioAssistant.tsx
+│   │   ├── FloatingPortfolioAssistant.tsx
 │   │   ├── ProjectCard.tsx
 │   │   └── Skills.tsx
 │   │

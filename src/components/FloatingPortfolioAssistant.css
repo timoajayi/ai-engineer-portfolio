@@ -1,0 +1,139 @@
+.portfolio-assistant-scrollable {
+  color-scheme: dark;
+  scrollbar-width: thin;
+  scrollbar-color: #52525b transparent;
+}
+
+.portfolio-assistant-scrollable::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.portfolio-assistant-scrollable::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.portfolio-assistant-scrollable::-webkit-scrollbar-thumb {
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: #52525b;
+  background-clip: padding-box;
+}
+
+.portfolio-assistant-scrollable::-webkit-scrollbar-thumb:hover {
+  background-color: #71717a;
+}
+
+.portfolio-assistant-markdown {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.portfolio-assistant-markdown :where(p, ul, ol, pre, blockquote) {
+  margin-block: 0.75rem;
+}
+
+.portfolio-assistant-markdown :where(h1, h2, h3, h4, h5, h6) {
+  margin-block: 1.25rem 0.5rem;
+  color: #fafafa;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.portfolio-assistant-markdown :where(h1, h2) {
+  font-size: 1rem;
+}
+
+.portfolio-assistant-markdown :where(h3, h4) {
+  font-size: 0.9375rem;
+}
+
+.portfolio-assistant-markdown :where(h5, h6) {
+  font-size: 0.875rem;
+}
+
+.portfolio-assistant-markdown strong {
+  color: #f4f4f5;
+  font-weight: 600;
+}
+
+.portfolio-assistant-markdown ul {
+  padding-inline-start: 1.25rem;
+  list-style: disc outside;
+}
+
+.portfolio-assistant-markdown ol {
+  padding-inline-start: 1.25rem;
+  list-style: decimal outside;
+}
+
+.portfolio-assistant-markdown ul ul {
+  list-style-type: circle;
+}
+
+.portfolio-assistant-markdown li + li {
+  margin-block-start: 0.375rem;
+}
+
+.portfolio-assistant-markdown li > :where(p, ul, ol) {
+  margin-block: 0.375rem;
+}
+
+.portfolio-assistant-markdown a {
+  color: #67e8f9;
+  text-decoration: underline;
+  text-decoration-color: #22d3ee80;
+  text-underline-offset: 0.15em;
+}
+
+.portfolio-assistant-markdown blockquote {
+  border-inline-start: 2px solid #3f3f46;
+  padding-inline-start: 0.75rem;
+  color: #a1a1aa;
+}
+
+.portfolio-assistant-markdown code {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.85em;
+}
+
+.portfolio-assistant-markdown :not(pre) > code {
+  border-radius: 0.25rem;
+  background: #27272a;
+  padding: 0.125rem 0.25rem;
+}
+
+.portfolio-assistant-code {
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid #27272a;
+  border-radius: 0.5rem;
+  background: #09090b;
+  padding: 0.75rem;
+  line-height: 1.6;
+  white-space: pre;
+  overflow-wrap: normal;
+}
+
+.portfolio-assistant-code code {
+  font-size: 0.75rem;
+}
+
+.portfolio-assistant-markdown hr {
+  margin-block: 1rem;
+  border-color: #27272a;
+}
+
+.portfolio-assistant-markdown > :first-child {
+  margin-block-start: 0;
+}
+
+.portfolio-assistant-markdown > :last-child {
+  margin-block-end: 0;
+}
+
+@media (forced-colors: active) {
+  .portfolio-assistant-scrollable {
+    scrollbar-color: auto;
+  }
+}

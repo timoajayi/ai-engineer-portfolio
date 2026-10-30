@@ -8,8 +8,8 @@ export default function Navbar() {
   const closeMenu = () => setMenuOpen(false);
 
   return (
-    <header className="absolute left-0 top-0 z-50 w-full">
-      <nav className="mx-auto max-w-7xl px-6 py-8 lg:px-8">
+    <header className="fixed left-0 top-0 z-50 w-full border-b border-zinc-900/80 bg-zinc-950/75 backdrop-blur-md">
+      <nav className="mx-auto max-w-7xl px-6 py-4 lg:px-8">
         <div className="flex items-center justify-between">
           <a
             href="#"
