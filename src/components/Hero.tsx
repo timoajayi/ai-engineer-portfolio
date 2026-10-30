@@ -1,3 +1,5 @@
+import HeroInteractiveText from "./HeroInteractiveText";
+
 export default function Hero() {
   return (
     <section className="mx-auto flex min-h-screen max-w-7xl items-center px-6 pt-24 lg:px-8">
@@ -11,7 +13,7 @@ export default function Hero() {
         </h1>
 
         <h2 className="mt-6 max-w-4xl text-3xl font-medium leading-tight text-zinc-300 sm:text-4xl lg:text-5xl">
-          Building intelligent systems from models to production.
+          Building <HeroInteractiveText text="intelligent systems" /> from models to production.
         </h2>
 
         <p className="mt-7 max-w-2xl text-lg leading-8 text-zinc-400">

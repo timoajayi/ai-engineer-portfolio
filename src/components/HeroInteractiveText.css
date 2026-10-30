@@ -1,0 +1,17 @@
+.hero-interactive-word {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.hero-interactive-letter {
+  display: inline-block;
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .hero-interactive-letter {
+    transform: translateY(var(--hero-letter-lift, 0px))
+      scale(var(--hero-letter-scale, 1));
+    transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+}
