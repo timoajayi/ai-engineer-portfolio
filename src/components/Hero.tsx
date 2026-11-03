@@ -1,9 +1,11 @@
 import HeroInteractiveText from "./HeroInteractiveText";
+import EngineeringTerminal from "./EngineeringTerminal";
+import { projects } from "@/data/projects";
 
 export default function Hero() {
   return (
-    <section className="mx-auto flex min-h-screen max-w-7xl items-center px-6 pt-24 lg:px-8">
-      <div className="max-w-4xl">
+    <section className="mx-auto flex min-h-screen max-w-7xl items-center px-6 pb-16 pt-24 sm:pb-20 lg:px-8">
+      <div className="w-full min-w-0 max-w-4xl">
         <p className="mb-5 text-sm font-medium uppercase tracking-[0.2em] text-cyan-400">
           AI Engineer
         </p>
@@ -42,6 +44,12 @@ export default function Hero() {
           >
             Contact Me
           </a>
+        </div>
+
+        <div className="mt-8 sm:mt-10">
+          <EngineeringTerminal
+            projects={projects.map(({ title, slug }) => ({ title, slug }))}
+          />
         </div>
       </div>
     </section>
