@@ -23,7 +23,7 @@ export default function Hero() {
           agentic workflows, APIs, and production-focused engineering.
         </p>
 
-        <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm text-zinc-500">
+        <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm text-zinc-400">
           <span>Machine Learning</span>
           <span>LLMs</span>
           <span>Agentic AI</span>

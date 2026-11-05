@@ -9,14 +9,16 @@ import Contact from "@/components/Contact";
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen bg-zinc-950 text-white">
+    <div className="relative min-h-screen bg-zinc-950 text-white">
       <Navbar />
-      <Hero />
-      <FeaturedProjects />
-      <About />
-      <Skills />
-      <Experience />
-      <Contact />
-    </main>
+      <main id="main-content" tabIndex={-1}>
+        <Hero />
+        <FeaturedProjects />
+        <About />
+        <Skills />
+        <Experience />
+        <Contact />
+      </main>
+    </div>
   );
 }

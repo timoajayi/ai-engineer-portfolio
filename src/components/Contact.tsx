@@ -52,32 +52,32 @@ export default function Contact() {
 
           <div className="border-t border-zinc-800 lg:border-l lg:border-t-0 lg:pl-12">
             <div className="border-b border-zinc-800 py-6 lg:pt-0">
-              <p className="text-sm text-zinc-500">Based in</p>
+              <p className="text-sm text-zinc-400">Based in</p>
               <p className="mt-2 font-medium text-white">
                 Germany
               </p>
             </div>
 
             <div className="border-b border-zinc-800 py-6">
-              <p className="text-sm text-zinc-500">Open to</p>
+              <p className="text-sm text-zinc-400">Open to</p>
               <p className="mt-2 font-medium text-white">
                 Junior AI Engineer · ML Engineer · Applied AI roles
               </p>
             </div>
 
             <div className="border-b border-zinc-800 py-6">
-              <p className="text-sm text-zinc-500">Languages</p>
+              <p className="text-sm text-zinc-400">Languages</p>
 
               <div className="mt-2 space-y-1">
                 <p className="font-medium text-white">English · Fluent</p>
-                <p className="text-white-400">
+                <p className="text-zinc-400">
                   German · B2
                 </p>
               </div>
             </div>
 
             <div className="py-6">
-              <p className="text-sm text-zinc-500">Current focus</p>
+              <p className="text-sm text-zinc-400">Current focus</p>
               <p className="mt-2 font-medium text-white">
                 LLMs · RAG · Agentic AI · MLOps
               </p>

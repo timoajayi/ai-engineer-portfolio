@@ -1,15 +1,36 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState, type KeyboardEvent } from "react";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const menuToggleRef = useRef<HTMLButtonElement>(null);
 
   const closeMenu = () => setMenuOpen(false);
 
+  function handleKeyDown(event: KeyboardEvent<HTMLElement>) {
+    if (
+      menuOpen &&
+      event.key === "Escape" &&
+      !event.nativeEvent.isComposing &&
+      !event.defaultPrevented
+    ) {
+      event.preventDefault();
+      closeMenu();
+      menuToggleRef.current?.focus({ preventScroll: true });
+    }
+  }
+
   return (
-    <header className="fixed left-0 top-0 z-50 w-full border-b border-zinc-900/80 bg-zinc-950/75 backdrop-blur-md">
-      <nav className="mx-auto max-w-7xl px-6 py-4 lg:px-8">
+    <header onKeyDown={handleKeyDown} className="fixed left-0 top-0 z-50 w-full border-b border-zinc-900/80 bg-zinc-950/75 backdrop-blur-md">
+      <a
+        href="#main-content"
+        onClick={closeMenu}
+        className="sr-only focus:not-sr-only focus:absolute focus:left-6 focus:top-4 focus:z-10 focus:rounded-lg focus:bg-cyan-400 focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-zinc-950"
+      >
+        Skip to content
+      </a>
+      <nav aria-label="Main navigation" className="mx-auto max-w-7xl px-6 py-4 lg:px-8">
         <div className="flex items-center justify-between">
           <a
             href="#"
@@ -38,7 +59,7 @@ export default function Navbar() {
             </a>
 
             <div className="flex items-center gap-3 border-l border-zinc-800 pl-8">
-              <span className="text-zinc-500">CV</span>
+              <span className="text-zinc-400">CV</span>
 
               <a
                 href="/Timothy-Ajayi-CV-English.pdf"
@@ -62,6 +83,7 @@ export default function Navbar() {
 
           {/* Mobile menu button */}
           <button
+            ref={menuToggleRef}
             type="button"
             onClick={() => setMenuOpen((open) => !open)}
             aria-expanded={menuOpen}
@@ -121,7 +143,7 @@ export default function Navbar() {
             </div>
 
             <div className="mt-4 border-t border-zinc-800 pt-4">
-              <p className="mb-3 text-xs uppercase tracking-[0.2em] text-zinc-600">
+              <p className="mb-3 text-xs uppercase tracking-[0.2em] text-zinc-400">
                 Curriculum Vitae
               </p>
 
