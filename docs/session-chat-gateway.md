@@ -12,7 +12,9 @@ or rejected sessions require verification again. No legacy destination is used.
 The backend implements `/internal/session-chat` in an outer, disabled ASGI adapter,
 not a FastAPI/OpenAPI route. Exact `SESSION_CHAT_HTTP_ENABLED=true` is necessary
 but insufficient there: startup also needs trusted pipeline/resolver composition.
-No production ingress resolver exists in either project. The backend's current
+Stage 1 now supplies narrowly scoped Vercel/Render production composition; see
+[production integration](production-integration.md). It remains unverified on the
+actual hosting platforms. The backend's current
 production policy denies legacy `/chat`; authenticated legacy access is limited to
 explicit isolated staging and cannot coexist with session HTTP enablement.
 
@@ -60,10 +62,10 @@ reuse fail closed. Backend scoped configuration independently rejects equal
 credentials. Operators must also keep signing keys separate from legacy staging,
 IP-rate HMAC and Gemini secrets, even when those values are not known here.
 
-No production identity provider is wired into `route.ts`. **Complete environment
-configuration and `CHAT_ENABLED=true` still return 503 without a fetch.** There is
-no environment selector for a fixture/provider and no public activation procedure
-in this document. Trusted hosting composition must be separately approved first.
+The production route now supplies identity only under the fixed Vercel production
+policy described in `production-integration.md`. Flags and keys alone are still
+insufficient outside that platform runtime. No environment selector can select a
+test identity. Public flags remain disabled and hosting verification is pending.
 
 ## Browser and session boundary
 

@@ -4,7 +4,7 @@ import { createInterface } from 'node:readline';
 import { resolve } from 'node:path';
 import { loadGatewayModules } from './chat-gateway-loader.mjs';
 
-export async function createLocalHarness(backend) {
+export async function createLocalHarness(backend, { production = false } = {}) {
   const child = spawn(resolve(backend, '.venv/bin/python'), ['-B',
     new URL('./offline_backend_bridge.py', import.meta.url).pathname, '--backend', resolve(backend)],
     { stdio: ['pipe', 'pipe', 'pipe'], env: { ...process.env, PYTHONDONTWRITEBYTECODE: '1' } });
@@ -56,7 +56,7 @@ export async function createLocalHarness(backend) {
   }
   let session, chat;
   async function reset() {
-    metadata = await rpc('reset'); clock = metadata.now; captures = []; mutate = undefined; visitorIP = '192.0.2.10';
+    metadata = await rpc('reset', { production }); clock = metadata.now; captures = []; mutate = undefined; visitorIP = '192.0.2.10';
     const environment = { CHAT_ENABLED: 'true', CHAT_SESSION_ENABLED: 'true', APP_ORIGIN: 'https://portfolio.example.test',
       AI_ASSISTANT_BACKEND_URL: 'https://backend.example.test', AI_ASSISTANT_CHAT_TOKEN: 'c'.repeat(43),
       AI_ASSISTANT_BACKEND_TOKEN: 'i'.repeat(43), GATEWAY_ASSERTION_ISSUER: 'portfolio-gateway',
@@ -67,7 +67,10 @@ export async function createLocalHarness(backend) {
     session = modules.load('src/lib/server/session-gateway.ts').createSessionGateway({
       readEnvironment: () => environment, fetch: upstream, now: () => clock,
     });
-    chat = modules.gateway.createChatGateway({ readEnvironment: () => environment, fetch: upstream,
+    chat = production ? modules.load('src/lib/server/vercel-chat.ts').createVercelChatGateway({
+      readEnvironment: () => environment, fetch: upstream, now: () => clock,
+      readRuntime: () => ({ VERCEL: '1', VERCEL_ENV: 'production', NODE_ENV: 'production' }),
+    }) : modules.gateway.createChatGateway({ readEnvironment: () => environment, fetch: upstream,
       now: () => clock, identityProvider: new SyntheticIdentity() });
   }
   await reset();
@@ -80,7 +83,9 @@ export async function createLocalHarness(backend) {
     get now() { return clock; },
     async browserRequest(path, body, cookie = '', extra = {}) {
       const request = new Request('https://portfolio.example.test' + path, { method: 'POST',
-        headers: { Origin: 'https://portfolio.example.test', 'Content-Type': 'application/json', ...(cookie ? { Cookie: cookie } : {}), ...extra },
+        headers: { Origin: 'https://portfolio.example.test', 'Content-Type': 'application/json',
+          ...(production ? { 'x-vercel-forwarded-for': visitorIP, 'x-forwarded-for': visitorIP } : {}),
+          ...(cookie ? { Cookie: cookie } : {}), ...extra },
         body: typeof body === 'string' ? body : JSON.stringify(body) });
       return (path === '/api/chat/session' ? session : chat)(request);
     },

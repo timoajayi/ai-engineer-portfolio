@@ -29,7 +29,7 @@ def main():
     fixture = None
     verification_calls = 0
 
-    def reset():
+    def reset(production=False):
         nonlocal fixture, verification_calls
         if fixture is not None:
             fixture.doCleanups()
@@ -62,11 +62,23 @@ def main():
 
         adapter = TurnstileAdapter(fixture.settings, transport=httpx.MockTransport(verify), clock=lambda: fixture.now)
         fixture.api.app.state.verification_service = VerifiedSessionService(adapter)
-        return {'now': int(fixture.now.timestamp() * 1000), 'key': KEY.hex(), 'policy': POLICY}
+        policy = POLICY
+        if production:
+            import base64
+            from src.production_chat import compose_production_chat, POLICY as production_policy
+            policy = production_policy
+            environment = {'RENDER': 'true', 'GATEWAY_INGRESS_POLICY': policy,
+                'GATEWAY_ASSERTION_ISSUER': 'portfolio-gateway', 'GATEWAY_ASSERTION_AUDIENCE': 'portfolio-backend',
+                'GATEWAY_ASSERTION_KEY_ID': 'gateway-key-1',
+                'GATEWAY_ASSERTION_KEY': base64.urlsafe_b64encode(KEY).rstrip(b'=').decode(),
+                'GATEWAY_ASSERTION_KEY_NOT_BEFORE': '0', 'GATEWAY_ASSERTION_KEY_NOT_AFTER': '253402300799'}
+            fixture.api.app.state.session_chat_pipeline = compose_production_chat(fixture.api.app,
+                fixture.controls, fixture.api.ChatRequest, fixture.api._chat_worker, environment)
+        return {'now': int(fixture.now.timestamp() * 1000), 'key': KEY.hex(), 'policy': policy}
 
     def dispatch(value):
         if value['action'] == 'reset':
-            return reset()
+            return reset(production=value.get('production') is True)
         if value['action'] == 'advance':
             fixture.now += timedelta(seconds=value['seconds'])
             return {'now': int(fixture.now.timestamp() * 1000)}

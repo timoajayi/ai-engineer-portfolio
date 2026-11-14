@@ -1,11 +1,12 @@
 import "server-only";
-import { createChatGateway, rejectChatMethod } from "@/lib/server/chat-gateway";
+import { rejectChatMethod } from "@/lib/server/chat-gateway";
+import { createVercelChatGateway } from "@/lib/server/vercel-chat";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const maxDuration = 55;
 
-export const POST = createChatGateway({
+export const POST = createVercelChatGateway({
   readEnvironment: () => ({
     CHAT_ENABLED: process.env.CHAT_ENABLED,
     APP_ORIGIN: process.env.APP_ORIGIN,
@@ -21,8 +22,8 @@ export const POST = createChatGateway({
     GATEWAY_INGRESS_POLICY: process.env.GATEWAY_INGRESS_POLICY,
   }),
   fetch: (input, init) => fetch(input, init),
-  // No production identity provider exists. No environment variable selects one.
-  // Trusted composition is a separate hosting-dependent implementation phase.
+  readRuntime: () => ({ VERCEL: process.env.VERCEL, VERCEL_ENV: process.env.VERCEL_ENV,
+    NODE_ENV: process.env.NODE_ENV }),
 });
 
 export const GET = rejectChatMethod;

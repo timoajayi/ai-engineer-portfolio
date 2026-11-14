@@ -1,5 +1,7 @@
 # AI Engineer Portfolio
 
+Current security integration: [Stage 1 Vercel / Render composition](docs/production-integration.md) is implemented and offline tested; public activation and hosting verification remain pending. Older phase reports below describe their historical state.
+
 A modern AI Engineer portfolio built with **Next.js, React, TypeScript, and Tailwind CSS**, designed to present my machine learning, LLM, agentic AI, and MLOps work through structured technical case studies.
 
 The portfolio also includes an integrated **AI Portfolio Assistant** that allows recruiters, hiring managers, and technical visitors to ask questions about my projects, skills, experience, and current work.
