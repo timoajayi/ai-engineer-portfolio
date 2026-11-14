@@ -2,9 +2,9 @@
 
 import { FormEvent, useCallback, useEffect, useId, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
+import PortfolioBotVerification from "./PortfolioBotVerification";
+import { AssistantRequestError, requestAssistantAnswer, requestVerifiedSession } from "../lib/assistant-client";
 import "./FloatingPortfolioAssistant.css";
-
-const API_URL = process.env.NEXT_PUBLIC_AI_ASSISTANT_API_URL;
 
 const REQUEST_TIMEOUT_MS = 60_000;
 
@@ -25,12 +25,17 @@ const followUpQuestions = [
   "What is Timothy currently working on?",
 ];
 
-export default function FloatingPortfolioAssistant() {
+export default function FloatingPortfolioAssistant({
+  verificationSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY,
+}: { verificationSiteKey?: string } = {}) {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [sessionReady, setSessionReady] = useState(false);
+  const proofRef = useRef<string | null>(null);
+  const acceptProof = useCallback((proof: string | null) => { proofRef.current = proof; }, []);
 
   const assistantId = useId();
   const headingId = `${assistantId}-heading`;
@@ -48,6 +53,7 @@ export default function FloatingPortfolioAssistant() {
   } | null>(null);
 
   const closeAssistant = useCallback(() => {
+    proofRef.current = null;
     setIsOpen(false);
     // Reveal it before React commits the closed state so focus can return now.
     if (launcherRef.current) {
@@ -171,8 +177,10 @@ export default function FloatingPortfolioAssistant() {
 
     if (!trimmedMessage || requestRef.current) return;
 
-    if (!API_URL) {
-      setError("The AI Portfolio Assistant is temporarily unavailable.");
+    if (!sessionReady && !proofRef.current) {
+      setError(verificationSiteKey
+        ? "Complete verification before sending a message."
+        : "The AI Portfolio Assistant is temporarily unavailable.");
       return;
     }
 
@@ -195,46 +203,33 @@ export default function FloatingPortfolioAssistant() {
     requestRef.current = { controller, timeout };
 
     try {
-      const response = await fetch(`${API_URL}/chat`, {
-        method: "POST",
-        signal: controller.signal,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          message: trimmedMessage,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("The assistant request failed.");
+      if (!sessionReady) {
+        const proof = proofRef.current;
+        proofRef.current = null; // Proofs are single-use, including lost responses.
+        await requestVerifiedSession(proof ?? "", controller.signal);
+        if (requestRef.current?.controller !== controller || controller.signal.aborted) return;
+        setSessionReady(true); // Cookie is set by the server, never read by JavaScript.
       }
-
-      const data: unknown = await response.json();
-      if (
-        typeof data !== "object" ||
-        data === null ||
-        !("answer" in data) ||
-        typeof data.answer !== "string" ||
-        !data.answer.trim()
-      ) {
-        throw new Error("The assistant returned an invalid response.");
-      }
+      const answer = await requestAssistantAnswer(trimmedMessage, controller.signal);
 
       if (requestRef.current?.controller !== controller) return;
       if (controller.signal.aborted) throw new Error("The request was aborted.");
 
       const assistantMessage: Message = {
         role: "assistant",
-        content: data.answer,
+        content: answer,
       };
 
       setMessages((current) => [...current, assistantMessage]);
-    } catch {
+    } catch (failure) {
       if (requestRef.current?.controller !== controller) return;
+      if (failure instanceof AssistantRequestError && [401, 403, 502].includes(failure.status)) {
+        setSessionReady(false);
+      }
       setError(
         timedOut
           ? "The assistant took too long to respond. Please try again."
+          : failure instanceof AssistantRequestError ? failure.message
           : "I couldn't reach the AI Portfolio Assistant. Please try again."
       );
     } finally {
@@ -339,6 +334,9 @@ export default function FloatingPortfolioAssistant() {
             tabIndex={0}
             className="portfolio-assistant-scrollable min-h-0 min-w-0 flex-1 overflow-y-auto overscroll-contain px-4 py-5 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-cyan-400/60 sm:px-5"
           >
+            {!sessionReady && !loading && (
+              <PortfolioBotVerification siteKey={verificationSiteKey} onProof={acceptProof} />
+            )}
             {messages.length === 0 ? (
               <div className="flex min-h-full flex-col justify-center">
                 <p className="text-base font-medium text-zinc-100">
